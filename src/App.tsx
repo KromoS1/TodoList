@@ -32,28 +32,34 @@ function App() {
                 return tasks
         }
     }
-
     const addTask = (title: string) => {
         let task = {id: v1(), title:title, isDone:false}
         setTasks([task,...tasks]);
     }
-
     const removeTask = (id: string) => {
         let filteredTask = tasks.filter(el => el.id !== id);
         setTasks(filteredTask);
     }
-
     const changeFilter = (value: FilterValuesType) => {
         setFilter(value);
+    }
+    const changeStatus = (id: string, isDone: boolean) => {
+        let task = tasks.find(t => t.id === id);
+        if (task) {
+            task.isDone = isDone;
+            setTasks([...tasks]);
+        }
     }
 
     return (
         <div className="App">
             <TodoList title={"What to learn"}
-                      tasks={getTask()}
+                      arrTasks={getTask()}
+                      filter={filter}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
+                      changeCheckboxStatus={changeStatus}
             />
         </div>
     );
