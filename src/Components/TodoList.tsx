@@ -1,26 +1,30 @@
-import React, {ChangeEvent,KeyboardEvent,useState} from "react";
-import {FilterValuesType, TaskType} from "../App";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {FilterValuesType,TaskType} from "../App";
 
 type PropsType = {
+    todoListID: string
     title: string,
-    arrTasks: Array<TaskType>
+    tasks:Array<TaskType>
     filter: FilterValuesType
-    removeTask: (id: string) => void
-    changeFilter: (value: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeCheckboxStatus: (id: string, isDone: boolean) => void
+    removeTask: (id: string,todoListID:string) => void
+    changeFilter: (value: FilterValuesType,todoListID:string) => void
+    addTask: (title: string, todoListID:string) => void
+    changeCheckboxStatus: (id: string, isDone: boolean,todoListID:string) => void
+    removeTodoList: (todoListID: string) => void
 };
 
 const TodoList:React.FC<PropsType> = ({
-    title,arrTasks,filter,removeTask,changeFilter,addTask,changeCheckboxStatus
-                                      }) => {
+todoListID, title,filter,tasks,
+removeTask, changeFilter,addTask, changeCheckboxStatus,removeTodoList
+}) => {
     let [titleInput, setTitleInput] = useState("");
     let [error,setError] = useState<string | null>(null);
-    const tasks = arrTasks.map(el => {
-        const onClickHandler = () => {removeTask(el.id)}
+
+    const taskJSXElement = tasks.map(el => {
+        const onClickHandler = () => {removeTask(el.id,todoListID)}
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = e.currentTarget.checked;
-            changeCheckboxStatus(el.id,newIsDoneValue);
+            changeCheckboxStatus(el.id,newIsDoneValue,todoListID);
         }
         return <li className={el.isDone ? "is-done" : ""} key={el.id}>
             <input type="checkbox"
@@ -39,7 +43,7 @@ const TodoList:React.FC<PropsType> = ({
             setError("Title is required!");
             return;
         }
-        addTask(titleInput.trim())
+        addTask(titleInput.trim(),todoListID)
         setTitleInput("");
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,13 +54,14 @@ const TodoList:React.FC<PropsType> = ({
             add();
         }
     }
-    const onAllClickHandler = () => changeFilter("all");
-    const onActiveClickHandler = () => changeFilter("active");
-    const onCompletedClickHandler = () => changeFilter("completed");
+    const onAllClickHandler = () => changeFilter("all",todoListID);
+    const onActiveClickHandler = () => changeFilter("active",todoListID);
+    const onCompletedClickHandler = () => changeFilter("completed",todoListID);
+    const onClickRemoveTodoList = () => removeTodoList(todoListID);
 
     return (
         <div>
-            <h3>{title}</h3>
+            <h3>{title}<button onClick={onClickRemoveTodoList}>X</button></h3>
             <div>
                 <input value={titleInput}
                        onChange={onChangeHandler}
@@ -68,7 +73,7 @@ const TodoList:React.FC<PropsType> = ({
                 {error && <div className={"error-message"}>{error}</div> }
             </div>
             <ul>
-                {tasks}
+                {taskJSXElement}
             </ul>
             <div>
                 <button className={filter === "all" ? "active-filter" : "" }
