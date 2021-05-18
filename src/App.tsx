@@ -27,7 +27,7 @@ type TaskStateType = {
     [key: string]: TaskType[]
 }
 export type FilterValuesType = "all" | "active" | "completed";
-type TodoListType = {
+export type TodoListType = {
     id: string,
     title: string,
     filter: FilterValuesType
@@ -55,7 +55,7 @@ function App() {
         ]
     });
 
-    const getTask = (todoList: TodoListType) => { // UI
+    const getTaskForTodoList = (todoList: TodoListType) => { // UI
         switch (todoList.filter) {
             case "active" :
                 return tasks[todoList.id].filter(t => !t.isDone);
@@ -74,9 +74,6 @@ function App() {
     const removeTask = (id: string, todoListID: string) => {
         setTasks({...tasks, [todoListID]: tasks[todoListID].filter(el => el.id !== id)});
     };
-    const changeTaskFilter = (value: FilterValuesType, todoListID: string) => {
-        setTodoList(todoList.map(tl => tl.id === todoListID ? {...tl, filter: value} : tl));
-    };
     const changeTaskStatus = (id: string, isDone: boolean, todoListID: string) => {
         tasks[todoListID] = tasks[todoListID].map(t => t.id === id ? {...t, isDone: isDone} : t)
         setTasks({...tasks});
@@ -86,6 +83,11 @@ function App() {
             ...tasks,
             [todoListID]: tasks[todoListID].map(t => t.id === id ? {...t, title: newTitle} : t)
         });
+    };
+
+    //todolist
+    const changeTaskFilter = (value: FilterValuesType, todoListID: string) => {
+        setTodoList(todoList.map(tl => tl.id === todoListID ? {...tl, filter: value} : tl));
     };
     const changeTodoListTitle = (todoListID: string, title: string) => {
         setTodoList(todoList.map(tl => tl.id === todoListID ? {...tl, title: title} : tl));
@@ -99,14 +101,15 @@ function App() {
         setTodoList(todoList.filter(tl => tl.id !== todoListID));
         delete tasks[todoListID];
     };
-    const classes = useStyles();
+
+
     const todoListsComponent = todoList.map(tl => {
         return (
             <Grid item key={tl.id}>
                 <Paper elevation={5} className={"paper_style"}>
                     <TodoList title={tl.title}
                               todoListID={tl.id}
-                              tasks={getTask(tl)}
+                              tasks={getTaskForTodoList(tl)}
                               filter={tl.filter}
                               removeTask={removeTask}
                               changeFilter={changeTaskFilter}
