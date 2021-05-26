@@ -4,11 +4,11 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {
     BottomNavigation,
-    ButtonGroup,
-    Checkbox, CheckboxProps,
+    Checkbox,
+    CheckboxProps,
     FormControlLabel,
     IconButton,
-    makeStyles, Tooltip, Typography,
+    makeStyles,
     withStyles
 } from "@material-ui/core";
 import {Delete} from "@material-ui/icons";

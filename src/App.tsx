@@ -2,18 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import TodoList from "./Components/TodoList";
 import {v1} from "uuid";
-import {
-    AppBar,
-    Button,
-    Container, createStyles,
-    Grid,
-    IconButton,
-    makeStyles,
-    MenuItem,
-    Paper, Theme,
-    Toolbar,
-    Typography
-} from "@material-ui/core";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {AddItemForm} from "./Components/AddItemForm";
 
@@ -23,7 +12,7 @@ export type TaskType = {
     title: string,
     isDone: boolean
 };
-type TaskStateType = {
+export type TaskStateType = {
     [key: string]: TaskType[]
 }
 export type FilterValuesType = "all" | "active" | "completed";
@@ -151,18 +140,18 @@ function App() {
 
 export default App;
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-            overflow: 'hidden',
-            padding: theme.spacing(0, 3),
-        },
-        paper: {
-            maxWidth: 400,
-            margin: `${theme.spacing(1)}px auto`,
-            padding: theme.spacing(2),
-        },
-    }),
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//     createStyles({
+//         root: {
+//             flexGrow: 1,
+//             overflow: 'hidden',
+//             padding: theme.spacing(0, 3),
+//         },
+//         paper: {
+//             maxWidth: 400,
+//             margin: `${theme.spacing(1)}px auto`,
+//             padding: theme.spacing(2),
+//         },
+//     }),
+// );
 
