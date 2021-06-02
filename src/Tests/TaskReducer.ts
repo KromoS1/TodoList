@@ -1,10 +1,11 @@
-import {TaskStateType} from "../App";
+import {TaskStateType} from "../AppWithRedux";
 import {v1} from "uuid";
 
 
 type PropertiesType<T> = T extends { [key: string]: infer U } ? U : never
 export type ActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropertiesType<T>>
 
+const initialState: TaskStateType = {}
 
 export const actionsTasks  = {
     removeTaskAC: (idTask:string, idTodoList:string) => ({type:"REMOVE-TASK", idTodoList, idTask} as const),
@@ -16,8 +17,7 @@ export const actionsTasks  = {
 }
 
 
-
-export const TaskReducer = (state: TaskStateType, action: ActionsType< typeof actionsTasks>):TaskStateType => {
+export const TaskReducer = (state: TaskStateType = initialState, action: ActionsType< typeof actionsTasks>):TaskStateType => {
     switch (action.type) {
         case "REMOVE-TASK":
             return {...state, [action.idTodoList]: state[action.idTodoList].filter(el => el.id !== action.idTask)}
