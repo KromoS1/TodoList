@@ -1,7 +1,6 @@
 import {TaskStateType} from "../AppWithRedux";
 import {v1} from "uuid";
 
-
 type PropertiesType<T> = T extends { [key: string]: infer U } ? U : never
 export type ActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropertiesType<T>>
 
@@ -38,7 +37,6 @@ export const TaskReducer = (state: TaskStateType = initialState, action: Actions
             const copyState = {...state};
             delete copyState[key];
             return copyState;
-
         default: return state
     }
 }

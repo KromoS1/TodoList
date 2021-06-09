@@ -3,17 +3,18 @@ import {FilterValuesType} from "../AppWithRedux";
 import {Button} from "@material-ui/core";
 
 type ButtonFilterType = {
-    title:string
-    filter: FilterValuesType
-    onClickHandler: () => void
+    titleP:string
+    filterP: FilterValuesType
+    onClickHandlerP: () => void
 }
 
-export const ButtonFilter: React.FC<ButtonFilterType> = (props) => {
+export const ButtonFilter = React.memo( (props:ButtonFilterType) => {
+    const {titleP,filterP,onClickHandlerP} = props;
     return(
         <div>
-            <Button variant={props.filter === props.title ? "contained" : "outlined"}
-                    onClick={props.onClickHandler}
-                    color={"primary"}>{props.title}</Button>
+            <Button variant={filterP === titleP ? "contained" : "outlined"}
+                    onClick={onClickHandlerP}
+                    color={"primary"}>{titleP}</Button>
         </div>
     )
-}
+})
