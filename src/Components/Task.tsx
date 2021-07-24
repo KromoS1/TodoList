@@ -3,36 +3,45 @@ import {Checkbox, CheckboxProps, FormControlLabel, IconButton, withStyles} from 
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {green} from "@material-ui/core/colors";
-import {TaskType} from "../AppWithRedux";
+import {TaskType} from '../DAL/APITasks';
+import {PropertyNameType} from '../Tests/TaskReducer';
 
 type TaskTypeProps = {
     taskP: TaskType
     todoListIDP:string
     removeTaskP: (idTask: string, todoListID: string) => void
-    changeCheckboxStatusP: (id: string, isDone: boolean, todoListID: string) => void
-    changeTaskTitleP: (id: string, newTitle: string, todoListID: string) => void
+    changeTask: (todolistId:string,idTask:string,task:PropertyNameType) => void
 }
 
 export const Task = React.memo((props:TaskTypeProps) => {
     const {taskP,
         todoListIDP,
         removeTaskP,
-        changeCheckboxStatusP,
-        changeTaskTitleP,} = props;
+    } = props;
+
+    let isDone:boolean;
+    let taskCopy = {...taskP};
+    taskCopy.status === 1 ? isDone = true : isDone = false;
 
     const onClickRemoveTask = () => {
         removeTaskP(taskP.id, todoListIDP)
     }
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        let newIsDoneValue = e.currentTarget.checked;
-        changeCheckboxStatusP(taskP.id, newIsDoneValue, todoListIDP);
+        e.currentTarget.checked ? taskCopy.status = 1 : taskCopy.status = 0
+        onChangeTask({...taskCopy})
     }
     const changeTaskTitle = useCallback((title: string) => {
-        changeTaskTitleP(taskP.id, title, todoListIDP);
-    },[changeTaskTitleP,taskP.id,todoListIDP])
+        taskCopy.title = title;
+        onChangeTask({...taskCopy});
+    },[taskP.id,todoListIDP])
+
+     const onChangeTask = useCallback((task:PropertyNameType) => {
+         props.changeTask(todoListIDP,taskP.id,{...task});
+     },[])
+
     return <div className={"task"} key={taskP.id} >
         <FormControlLabel label={""} control={
-            <GreenCheckbox checked={taskP.isDone} onChange={changeTaskStatus} />
+            <GreenCheckbox checked={isDone} onChange={changeTaskStatus} />
         }/>
         <EditableSpan titleP={taskP.title} changeTitleP={changeTaskTitle}/>
         <IconButton onClick={onClickRemoveTask}>
