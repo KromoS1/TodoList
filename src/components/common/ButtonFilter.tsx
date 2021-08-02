@@ -1,6 +1,6 @@
 import React from "react";
-import {FilterValuesType} from "../AppWithRedux";
 import {Button} from "@material-ui/core";
+import {FilterValuesType} from '../../redux/types/Types';
 
 type ButtonFilterType = {
     titleP:string
