@@ -1,34 +1,19 @@
-import {AppBar, Button, IconButton, LinearProgress, makeStyles, MenuItem, Toolbar, Typography} from '@material-ui/core';
-import MenuHeader from '@material-ui/core/Menu';
+import {AppBar, Button, IconButton, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import React from 'react';
-import {createStyles, Theme} from '@material-ui/core/styles';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/store";
-import {logOut} from "../../redux/reducers/IsAuthReducer";
+import {StatusType} from "../../redux/reducers/StatusAppReducer";
+import {authMe, logOut} from "../../redux/reducers/IsAuthReducer";
 
-type PropsType = {
-    isLoad: boolean
+type HeaderType = {
+    status: StatusType
     isAuth: boolean
     userLogin: string
-    logOut: () => void
+    logout: () => void
 }
 
-const Header: React.FC<PropsType> = props => {
-    const classes = useStyles();
-
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-        props.logOut();
-    };
-
-
+const Header: React.FC<HeaderType> = props => {
     return (
         <AppBar position="static">
             <Toolbar style={{justifyContent: "space-between"}}>
@@ -41,50 +26,25 @@ const Header: React.FC<PropsType> = props => {
                 {
                     props.isAuth
                         ? <>
-                            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                {props.userLogin}
-                            </Button>
-                            <MenuHeader id="simple-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Log out</MenuItem>
-                            </MenuHeader>
+                            <span>{props.userLogin}</span>
+                        <Button onClick={props.logout} color={"inherit"}>Log out</Button>
                         </>
                         : <Button color="inherit">Login</Button>
                 }
             </Toolbar>
-            <div className={classes.load}>
-                {
-                    props.isLoad && <LinearProgress/>
-                }
-            </div>
         </AppBar>
     )
 }
 
 export const HeaderContainer = () => {
-    const isLoad = useSelector<AppRootStateType, boolean>(state => state.isLoad);
+    const status = useSelector<AppRootStateType, StatusType>(state => state.statusApp.status);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.isAuth.isAuth);
     const userLogin = useSelector<AppRootStateType, string>(state => state.isAuth.login);
     const dispatch = useDispatch();
 
-    const logOutFromAcc = () => {
+    const logout = () => {
         dispatch(logOut());
     }
 
-    return <Header isLoad={isLoad} isAuth={isAuth} userLogin={userLogin} logOut={logOutFromAcc}/>
+    return <Header status={status} isAuth={isAuth} userLogin={userLogin} logout={logout}/>
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        load: {
-            width: '100%',
-            '& > * + *': {
-                marginTop: theme.spacing(2),
-            },
-        },
-    }),
-);

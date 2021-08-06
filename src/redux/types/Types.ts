@@ -5,7 +5,7 @@ export type ActionsType<T extends { [key: string]: (...args: any[]) => any }> = 
 
 export type TodoListDomainType = TodolistType & {
     filter: FilterValuesType
-    isLoad?: boolean
+    disable: boolean
 }
 export type TodolistType = {
     id: string
@@ -16,17 +16,18 @@ export type TodolistType = {
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 export type TodolistPropsType = {
-    todoListId: string
-    title: string,
+    todoList:TodoListDomainType
     tasks: TaskType[]
-    filter: FilterValuesType
-    // removeTask: (id: string, todoListID: string) => void
     changeFilter: (value: FilterValuesType, todoListID: string) => void
     addTask: (title: string, todoListID: string) => void
     removeTodoList: (todoListID: string) => void
     changeTodoListTitle: (todoListID: string, title: string) => void
-    // changeTask: (todolistId: string, idTask: string, model: UpdateModelPropertyTaskType) => void
 };
+
+export type TodoListContainerType = {
+    todoLists: TodoListDomainType[]
+    tasks: TaskStateType
+}
 
 
 ///task type
@@ -66,6 +67,7 @@ export type TaskStateType = {
 export type TaskTypeProps = {
     task: TaskType
     todoListId: string
+    disable:boolean
     removeTask: (idTask: string, todoListID: string) => void
     changeTask: (todolistId: string, idTask: string, task: UpdateModelPropertyTaskType) => void
 }
@@ -74,6 +76,7 @@ export type TaskContainerPropsType = {
     tasks: TaskType[]
     todoListId: string
     filter: FilterValuesType
+    disable:boolean
 }
 
 export type UpdateModelPropertyTaskType = {
@@ -101,14 +104,15 @@ export type APIModelPropertyTaskType = {
 //addItemForm
 export type AddItemFormType = {
     addItem: (title: string) => void
+    disable:boolean
 }
 
 //editableSpan
 export type EditableSpanType = {
-    title: string
+    titleSpan: string
     changeTitle: (newTitle: string) => void
     type: 'title' | 'priority'
-    click?: () => void
+    disable?:boolean
 };
 
 //isAuth types
@@ -125,9 +129,9 @@ export type MeProfileType = AuthMeType & {
     isAuth:boolean
 }
 
-export type FormDataType = {
+export type FormDataLoginType = {
     email: string,
     password: string,
     rememberMe: boolean
-    captcha: boolean
+    captcha?: boolean
 }

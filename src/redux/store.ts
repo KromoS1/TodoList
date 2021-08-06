@@ -3,16 +3,16 @@ import {TaskReducer} from './reducers/TaskReducer';
 import {TodoListReducers} from './reducers/TodoListReducers';
 import thunkMiddleware, {ThunkAction} from 'redux-thunk';
 import {ActionsType} from './types/Types';
-import {IsLoadReducer} from './reducers/IsLoadReducer';
 import {actions} from './actions/Actions';
 import {IsAuthReducer} from "./reducers/IsAuthReducer";
 import {reducer as formReducer} from 'redux-form'
+import {StatusAppReducer} from "./reducers/StatusAppReducer";
 
 
 const rootReducer = combineReducers({
     todoLists: TodoListReducers,
     tasks: TaskReducer,
-    isLoad: IsLoadReducer,
+    statusApp: StatusAppReducer,
     isAuth:IsAuthReducer,
     form:formReducer,
 });

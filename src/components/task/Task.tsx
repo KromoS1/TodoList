@@ -1,9 +1,8 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
-import {Checkbox, CheckboxProps, FormControlLabel, IconButton, withStyles} from '@material-ui/core';
-import {EditableSpan} from '../common/EditableSpan';
+import {Checkbox, CheckboxProps, IconButton, withStyles} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {green} from '@material-ui/core/colors';
-import {PageForChangeTask} from './PageForChangeTask';
+import {PageUpdateTask} from './PageUpdateTask';
 import {
     TaskContainerPropsType,
     TaskStatuses,
@@ -12,39 +11,58 @@ import {
 } from '../../redux/types/Types';
 import {deleteTask, updateTask} from '../../redux/reducers/TaskReducer';
 import {useDispatch} from 'react-redux';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
 
 export const Task: React.FC<TaskTypeProps> = React.memo(props => {
-
     const [showDetails, setShowDetails] = useState<boolean>(false);
+    const [editMode, setEditMode] = useState<boolean>(false);
 
-    const onClickRemoveTask = () => {
+    const onClickRemoveTask = useCallback(() => {
         props.removeTask(props.task.id, props.todoListId)
-    }
-    const showDetailsTask = () => {
+    }, [props]);
+    const showDetailsTask = useCallback(() => {
         setShowDetails(!showDetails);
-    }
+    }, [showDetails]);
 
     const onChangeTask = useCallback((model: UpdateModelPropertyTaskType) => {
         props.changeTask(props.todoListId, props.task.id, model);
-    }, [props])
+    }, [props]);
     const changeTaskTitle = useCallback((title: string) => {
         onChangeTask({title});
-    }, [onChangeTask])
+        setEditMode(false);
+    }, [onChangeTask]);
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
         e.currentTarget.checked
             ? onChangeTask({status: TaskStatuses.InProgress})
             : onChangeTask({status: TaskStatuses.New})
     }
 
+    const titleForSpan = (title:string):string => {
+        if (title.length>23){
+            return props.task.title.substr(0,23) + "...";
+        }else {
+            return title;
+        }
+    }
+
     const taskJSX = (
         <>
             <div className={'task'} key={props.task.id}>
-                <FormControlLabel label={''} control={
-                    <GreenCheckbox checked={props.task.status === TaskStatuses.InProgress}
-                                   onChange={changeTaskStatus}/>
-                }/>
-                <EditableSpan type={'title'} title={props.task.title} changeTitle={changeTaskTitle} click={showDetailsTask}/>
-                <IconButton onClick={onClickRemoveTask}>
+                <GreenCheckbox checked={props.task.status === TaskStatuses.InProgress}
+                               onChange={changeTaskStatus} disabled={props.disable}/>
+                {
+                    editMode
+                        ? <EditableSpanFormik type={'title'} title={props.task.title} changeTitle={changeTaskTitle}
+                                              disable={props.disable}/>
+                        : <span onDoubleClick={() => {
+                            setEditMode(true)
+                        }}>{titleForSpan(props.task.title)}</span>
+                }
+                <IconButton onClick={showDetailsTask} disabled={props.disable}>
+                    <ExpandMoreIcon/>
+                </IconButton>
+                <IconButton onClick={onClickRemoveTask} disabled={props.disable}>
                     <Delete/>
                 </IconButton>
             </div>
@@ -54,7 +72,7 @@ export const Task: React.FC<TaskTypeProps> = React.memo(props => {
     return (
         showDetails
             ? <>
-                <PageForChangeTask task={props.task} changeTask={onChangeTask} showDetails={showDetailsTask}/>
+                <PageUpdateTask task={props.task} changeTask={onChangeTask} showDetails={showDetailsTask}/>
                 {taskJSX}
             </>
             : <>
@@ -85,6 +103,7 @@ export const TaskContainer: React.FC<TaskContainerPropsType> = props => {
         taskJSX = taskForTodoList.map(el =>
             <Task key={el.id}
                   task={el}
+                  disable={props.disable}
                   todoListId={props.todoListId}
                   removeTask={removeTask}
                   changeTask={changeTask}

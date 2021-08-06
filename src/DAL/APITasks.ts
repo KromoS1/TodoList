@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {APIModelPropertyTaskType, TaskType} from '../redux/types/Types';
-import {ResponseType, ResponseTypeGet, ResponseTypeGeneric} from '../redux/types/TypesResponse';
+import {ResponseTypeGet, ResponseTypeGeneric} from '../redux/types/TypesResponse';
 import {apiKey} from "./Api-key";
 
 
@@ -18,7 +18,7 @@ export const APITasks = {
             .then(response => response.data.items)
     },
     create(id: string, title: string) {
-        return axiosInstance.post<ResponseType<{item:TaskType}>>(`/${id}/tasks`, {title})
+        return axiosInstance.post<ResponseTypeGeneric<{item:TaskType}>>(`/${id}/tasks`, {title})
             .then(response => response.data)
     },
     updateTitle(todoListId:string,idTask:string,property:APIModelPropertyTaskType) {
@@ -26,7 +26,7 @@ export const APITasks = {
             .then(response => response.data)
     },
     delete(todoListId:string,idTask:string) {
-        return axiosInstance.delete<ResponseType>(`/${todoListId}/tasks/${idTask}`)
+        return axiosInstance.delete<ResponseTypeGeneric>(`/${todoListId}/tasks/${idTask}`)
             .then(response => response.data.resultCode)
     }
 }

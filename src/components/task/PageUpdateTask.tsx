@@ -4,17 +4,17 @@ import {getTasks} from '../../redux/reducers/TaskReducer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {DatesTask} from '../common/DatesTask';
 import SaveIcon from '@material-ui/icons/Save';
-import {EditableSpan} from '../common/EditableSpan';
 import {useDispatch} from 'react-redux';
 import {TaskPriorities, TaskType, UpdateModelPropertyTaskType} from '../../redux/types/Types';
+import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
 
-type PropsType = {
+type PageUpdateTaskType = {
     task: TaskType
     changeTask: (property: UpdateModelPropertyTaskType) => void
     showDetails: () => void
 }
 
-export const PageForChangeTask: React.FC<PropsType> = props => {
+export const PageUpdateTask: React.FC<PageUpdateTaskType> = React.memo(props => {
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -63,7 +63,7 @@ export const PageForChangeTask: React.FC<PropsType> = props => {
                             <span>{task.title}</span>
                         </div>
                         <div className={classes.font}>
-                            <EditableSpan title={task.priority + ''} changeTitle={savePriority} type={'priority'}/>
+                            <EditableSpanFormik title={task.priority + ''} changeTitle={savePriority} type={'priority'}/>
                         </div>
                     </div>
                     <div className={classes.content}>
@@ -99,7 +99,7 @@ export const PageForChangeTask: React.FC<PropsType> = props => {
             </Paper>
         </Box>
     )
-}
+})
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {TodoListDomainType} from '../redux/types/Types';
-import {ResponseType} from '../redux/types/TypesResponse';
+import {ResponseTypeGeneric} from '../redux/types/TypesResponse';
 import {apiKey} from "./Api-key";
 
 
@@ -18,16 +18,16 @@ export const APITodoLists = {
             .then(res => res.data)
     },
     create(title:string) {
-        return axiosInstance.post<ResponseType<{item:TodoListDomainType}>>("todo-lists", {title})
+        return axiosInstance.post<ResponseTypeGeneric<{item:TodoListDomainType}>>("todo-lists", {title})
             .then(response => response.data)
     },
     updateTitle(title: string, id: string) {
-        return axiosInstance.put<ResponseType>(`todo-lists/${id}`, {title})
-            .then(response => response.data.resultCode)
+        return axiosInstance.put<ResponseTypeGeneric>(`todo-lists/${id}`, {title})
+            .then(response => response.data)
     },
     delete(id: string) {
-        return axiosInstance.delete<ResponseType>(`todo-lists/${id}`)
-            .then(response => response.data.resultCode)
+        return axiosInstance.delete<ResponseTypeGeneric>(`todo-lists/${id}`)
+            .then(response => response.data)
     },
 }
 
