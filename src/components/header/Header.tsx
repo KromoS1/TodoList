@@ -4,7 +4,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/store";
 import {StatusType} from "../../redux/reducers/StatusAppReducer";
-import {authMe, logOut} from "../../redux/reducers/IsAuthReducer";
+import {logOut} from "../../redux/reducers/IsAuthReducer";
 
 type HeaderType = {
     status: StatusType
@@ -26,8 +26,7 @@ const Header: React.FC<HeaderType> = props => {
                 {
                     props.isAuth
                         ? <>
-                            <span>{props.userLogin}</span>
-                        <Button onClick={props.logout} color={"inherit"}>Log out</Button>
+                            <Button onClick={props.logout} color={"inherit"}>Log out</Button>
                         </>
                         : <Button color="inherit">Login</Button>
                 }

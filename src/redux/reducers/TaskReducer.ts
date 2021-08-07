@@ -7,10 +7,15 @@ import {
     UpdateModelPropertyTaskType
 } from '../types/Types';
 import {AppRootStateType, AppThunkType} from '../store';
-import {actions} from '../actions/Actions';
 import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
+import {actionsStatusApp, actionsTask, actionsTodoList} from "../actions/Actions";
 
 const initialState: TaskStateType = {}
+const actions = {
+    ...actionsTask,
+    ...actionsStatusApp,
+    ...actionsTodoList,
+}
 
 export const TaskReducer = (state: TaskStateType = initialState, action: ActionsType<typeof actions>): TaskStateType => {
     switch (action.type) {

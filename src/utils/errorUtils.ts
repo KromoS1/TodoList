@@ -1,21 +1,21 @@
 import {ResponseTypeGeneric} from "../redux/types/TypesResponse";
 import {Dispatch} from "redux";
 import {ActionsType} from "../redux/types/Types";
-import {actions} from "../redux/actions/Actions";
+import {actionsStatusApp} from "../redux/actions/Actions";
 
-type ErrorUtilsDispatchType = Dispatch<ActionsType<typeof actions>>
+type ErrorUtilsDispatchType = Dispatch<ActionsType<typeof actionsStatusApp>>
 
 export const handleServerAppError = <T>(data: ResponseTypeGeneric<T>, dispatch: ErrorUtilsDispatchType) => {
 
     if (data.messages.length) {
-        dispatch(actions.setMessageStatus(data.messages[0]));
+        dispatch(actionsStatusApp.setMessageStatus(data.messages[0]));
     } else {
-        dispatch(actions.setMessageStatus("Some error occurred."));
+        dispatch(actionsStatusApp.setMessageStatus("Some error occurred."));
     }
-    dispatch(actions.setStatusApp("failed"));
+    dispatch(actionsStatusApp.setStatusApp("failed"));
 }
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: ErrorUtilsDispatchType) => {
-    dispatch(actions.setMessageStatus(error.message))
-    dispatch(actions.setStatusApp('failed'))
+    dispatch(actionsStatusApp.setMessageStatus(error.message))
+    dispatch(actionsStatusApp.setStatusApp('failed'))
 }

@@ -1,48 +1,76 @@
+import {TaskPriorities, TaskStateType, TaskStatuses, TodoListDomainType} from "../redux/types/Types";
+import {actionsTodoList} from "../redux/actions/Actions";
+import {TaskReducer} from "../redux/reducers/TaskReducer";
+import {TodoListReducers} from "../redux/reducers/TodoListReducers";
 
-// import {actionsTasks, TaskReducer} from "./TaskReducer";
-// import {actionsTodoList, TodoListReducers} from "./TodoListReducers";
-// import {v1} from "uuid";
-// import {TaskStateType, TodoListType} from "../AppWithRedux";
-//
-// test('ids should be equals', () => {
-//     const startTasksState: TaskStateType = {};
-//     const startTodolistsState: TodoListType[] = [];
-//
-//     const action = actionsTodoList.addTodoListAC("new todolist");
-//     const endTasksState = TaskReducer(startTasksState, action)
-//     const endTodolistsState = TodoListReducers(startTodolistsState,action)
-//
-//     const keys = Object.keys(endTasksState);
-//     const idFromTasks = keys[0];
-//     const idFromTodolists = endTodolistsState[0].id;
-//
-//     expect(idFromTasks).toBe(action.idTodoList);
-//     expect(idFromTodolists).toBe(action.idTodoList);
-// });
-//
-// test('remove todolist should be correct delete array task', () => {
-//     let todolistId1 = "todolistId1";
-//     let todolistId2 = "todolistId2";
-//     const startStateTodoList: Array<TodoListType> = [
-//         {id: todolistId1, title: "What to learn", filter: "all"},
-//         {id: todolistId2, title: "What to buy", filter: "all"}
-//     ]
-//     const startStateTask: TaskStateType = {
-//         "todolistId1": [
-//             { id: "1", title: "CSS", isDone: false },
-//             { id: "2", title: "JS", isDone: true },
-//             { id: "3", title: "React", isDone: false }
-//         ],
-//         "todolistId2": [
-//             { id: "1", title: "bread", isDone: false },
-//             { id: "2", title: "milk", isDone: true },
-//             { id: "3", title: "tea", isDone: false }
-//         ]
-//     };
-//
-//     const endTasksState = TaskReducer(startStateTask,actionsTasks.removeTodoListAC(todolistId2))
-//     const endTodolistsState = TodoListReducers(startStateTodoList,actionsTodoList.removeTodoListAC(todolistId2))
-//
-//     expect(endTasksState["todolistId2"]).toBe(undefined);
-//     expect(endTodolistsState.length).toBe(1);
-// });
+
+let startTodolistState: TodoListDomainType[] = [];
+beforeEach(() => {
+    startTodolistState = [
+        {id: "todolistId1", title: "What to learn", filter: "all", order:0,addedDate:'',disable:true},
+        {id: "todolistId2", title: "What to buy", filter: "all",order:1,addedDate:'',disable:false},
+    ]
+})
+
+let startTaskState: TaskStateType = {};
+beforeEach(() => {
+    startTaskState = {
+        "todolistId1": [
+            {
+                id: "1",
+                todoListId: "todolist1", title: "React", description: "description", status: TaskStatuses.New,
+                priority: TaskPriorities.Low, order: 1, startDate: "", addedDate: "", deadline: ""
+            },
+            {
+                id: "2",
+                todoListId: "todolist1", title: "task", description: "description1", status: TaskStatuses.InProgress,
+                priority: TaskPriorities.Hi, order: 2, startDate: "1", addedDate: "2", deadline: "3"
+            },
+        ],
+        "todolistId2": [
+            {
+                id: "1",
+                todoListId: "todolist2", title: "React", description: "description", status: TaskStatuses.New,
+                priority: TaskPriorities.Low, order: 1, startDate: "", addedDate: "", deadline: ""
+            },
+            {
+                id: "2",
+                todoListId: "todolist2", title: "task", description: "description1", status: TaskStatuses.InProgress,
+                priority: TaskPriorities.Hi, order: 2, startDate: "1", addedDate: "2", deadline: "3"
+            },
+        ]
+    }
+});
+
+
+test('ids should be equals', () => {
+    const startTasksState: TaskStateType = {};
+    const startTodolistsState: TodoListDomainType[] = [];
+
+    const actionTodo = actionsTodoList.addTodoList( {id: "1", title: "What to learn", filter: "all", order:0,addedDate:'',disable:true});
+    const actionTask = actionsTodoList.addTasksTodoList( "1");
+
+    const endTasksState = TaskReducer(startTasksState, actionTask);
+    const endTodolistsState = TodoListReducers(startTodolistsState,actionTodo);
+
+    const keys = Object.keys(endTasksState);
+    const idFromTasks = keys[0];
+    const idFromTodolists = endTodolistsState[0].id;
+
+    expect(idFromTasks).toBe(actionTodo.todoList.id);
+    expect(idFromTodolists).toBe(actionTask.todoListId);
+});
+
+test('remove todolist should be correct delete array task', () => {
+    const action = actionsTodoList.removeTodoList("todolistId2");
+
+    const endTasksState = TaskReducer(startTaskState,action);
+    const endTodolistsState = TodoListReducers(startTodolistState,action);
+
+    expect(endTasksState["todolistId2"]).toBe(undefined);
+    expect(endTodolistsState).toEqual(
+        [
+            {id: "todolistId1", title: "What to learn", filter: "all", order:0,addedDate:'',disable:true},
+        ]
+    );
+});

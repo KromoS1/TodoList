@@ -1,5 +1,5 @@
 import {ActionsType} from "../types/Types";
-import {actions} from "../actions/Actions";
+import {actionsIsAuth, actionsStatusApp} from "../actions/Actions";
 import {AppThunkType} from "../store";
 import {APIAuthMe} from "../../DAL/APIAuthMe";
 import {handleServerNetworkError} from "../../utils/errorUtils";
@@ -16,10 +16,14 @@ const initialState: StatusAppType = {
     status: "idle",
     isInitialized:false,
 }
+const actions = {
+    ...actionsStatusApp,
+    ...actionsIsAuth,
+}
 
 export const StatusAppReducer = (state: StatusAppType = initialState, action: ActionsType<typeof actions>): StatusAppType => {
     switch (action.type) {
-        case "SET/APP-STATUS":
+        case "SET-APP-STATUS":
             return {...state, status: action.status}
         case "SET-MESSAGE-STATUS":
             return {...state, message: action.message}
@@ -31,7 +35,7 @@ export const StatusAppReducer = (state: StatusAppType = initialState, action: Ac
 }
 
 
-export const inizializeApp = ():AppThunkType => async dispatch => {
+export const initializeApp = ():AppThunkType => async dispatch => {
     try {
         const me = await APIAuthMe.me();
         if (me.resultCode === 0){

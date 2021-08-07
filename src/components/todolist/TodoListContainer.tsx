@@ -9,12 +9,12 @@ import {
     updateTitleTodoListTC
 } from '../../redux/reducers/TodoListReducers';
 import {createTaskTC} from '../../redux/reducers/TaskReducer';
-import {actions} from '../../redux/actions/Actions';
 import {Grid, Paper} from '@material-ui/core';
 import {TodoList} from './TodoList';
 import {Redirect} from "react-router-dom";
 import {Snackbars} from "../common/SnackBars";
 import {AddItemFormContainer} from "../FormComponents/AddItemFormFormik";
+import {actionsTodoList} from "../../redux/actions/Actions";
 
 const TodoListContainer: React.FC<TodoListContainerType> = props => {
 
@@ -28,7 +28,7 @@ const TodoListContainer: React.FC<TodoListContainerType> = props => {
         dispatch(createTaskTC(todoListID, title));
     }, [dispatch]);
     const changeTaskFilter = useCallback((value: FilterValuesType, todoListID: string) => {
-        dispatch(actions.changeTodoListFilter(todoListID, value));
+        dispatch(actionsTodoList.changeTodoListFilter(todoListID, value));
     }, [dispatch]);
     const changeTodoListTitle = useCallback((todoListID: string, title: string) => {
         dispatch(updateTitleTodoListTC(todoListID, title));
@@ -41,7 +41,7 @@ const TodoListContainer: React.FC<TodoListContainerType> = props => {
         let taskForTodoList = props.tasks[tl.id];
         return (
             <Grid item key={tl.id}>
-                <Paper elevation={8} className={'paper_style'}>
+                <Paper elevation={10} className={'paper_style'}>
                     <TodoList todoList={tl}
                               tasks={taskForTodoList}
                               changeFilter={changeTaskFilter}
@@ -80,7 +80,7 @@ export const TodoPage = () => {
             <Grid container style={{padding: '20px'}}>
                 <AddItemFormContainer onSubmit={addTodoList} disable={false}/>
             </Grid>
-            <Grid container spacing={5}>
+            <Grid container spacing={5} style={{marginTop: '25px',justifyContent:"center"}}>
                 <TodoListContainer todoLists={todoLists} tasks={tasks}/>
             </Grid>
             <Snackbars/>

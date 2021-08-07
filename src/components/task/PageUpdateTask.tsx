@@ -7,8 +7,9 @@ import SaveIcon from '@material-ui/icons/Save';
 import {useDispatch} from 'react-redux';
 import {TaskPriorities, TaskType, UpdateModelPropertyTaskType} from '../../redux/types/Types';
 import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
+import {withFormik} from "formik";
 
-type PageUpdateTaskType = {
+interface PageUpdateTaskType {
     task: TaskType
     changeTask: (property: UpdateModelPropertyTaskType) => void
     showDetails: () => void
@@ -19,7 +20,7 @@ export const PageUpdateTask: React.FC<PageUpdateTaskType> = React.memo(props => 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getTasks(props.task.todoListId));
-    }, [dispatch, props.task.todoListId])
+    }, [])
 
     const [textDesc, setTextDesc] = useState<string>(props.task.description);
     const [task, setTask] = useState<TaskType>({...props.task});
@@ -100,6 +101,24 @@ export const PageUpdateTask: React.FC<PageUpdateTaskType> = React.memo(props => 
         </Box>
     )
 })
+
+//
+// const EditableSpanForm = withFormik<FormProps, ValuesType>({
+//     mapPropsToValues: props => {
+//         return {
+//             title: props.title,
+//             disable: props.disable,
+//             onSubmit: props.changeTitle,
+//             type: props.type,
+//         };
+//     },
+//     handleSubmit: (values, form) => {
+//         form.props.changeTitle(values.title);
+//     },
+// })(Form);
+
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {

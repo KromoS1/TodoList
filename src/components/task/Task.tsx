@@ -16,7 +16,6 @@ import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
 
 export const Task: React.FC<TaskTypeProps> = React.memo(props => {
     const [showDetails, setShowDetails] = useState<boolean>(false);
-    const [editMode, setEditMode] = useState<boolean>(false);
 
     const onClickRemoveTask = useCallback(() => {
         props.removeTask(props.task.id, props.todoListId)
@@ -30,7 +29,6 @@ export const Task: React.FC<TaskTypeProps> = React.memo(props => {
     }, [props]);
     const changeTaskTitle = useCallback((title: string) => {
         onChangeTask({title});
-        setEditMode(false);
     }, [onChangeTask]);
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
         e.currentTarget.checked
@@ -38,27 +36,15 @@ export const Task: React.FC<TaskTypeProps> = React.memo(props => {
             : onChangeTask({status: TaskStatuses.New})
     }
 
-    const titleForSpan = (title:string):string => {
-        if (title.length>23){
-            return props.task.title.substr(0,23) + "...";
-        }else {
-            return title;
-        }
-    }
-
     const taskJSX = (
         <>
             <div className={'task'} key={props.task.id}>
                 <GreenCheckbox checked={props.task.status === TaskStatuses.InProgress}
                                onChange={changeTaskStatus} disabled={props.disable}/>
-                {
-                    editMode
-                        ? <EditableSpanFormik type={'title'} title={props.task.title} changeTitle={changeTaskTitle}
-                                              disable={props.disable}/>
-                        : <span onDoubleClick={() => {
-                            setEditMode(true)
-                        }}>{titleForSpan(props.task.title)}</span>
-                }
+                <EditableSpanFormik type={'title'}
+                                    title={props.task.title}
+                                    changeTitle={changeTaskTitle}
+                                    disable={props.disable}/>
                 <IconButton onClick={showDetailsTask} disabled={props.disable}>
                     <ExpandMoreIcon/>
                 </IconButton>

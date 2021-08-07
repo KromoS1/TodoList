@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {makeStyles, TextField} from "@material-ui/core";
+import React, {useCallback, useState} from 'react';
+import {makeStyles, MenuItem, TextField, Tooltip} from "@material-ui/core";
 import {FormikProps, useFormik, withFormik} from "formik";
 import * as Yup from "yup";
-import {createStyles} from "@material-ui/core/styles";
+import {createStyles, Theme} from "@material-ui/core/styles";
 
 interface ValuesType {
     title: string
@@ -17,13 +17,37 @@ interface FormProps {
     disable?: boolean
 }
 
+const priorities = [
+    {
+        value: '1',
+        label: '1',
+    },
+    {
+        value: '2',
+        label: '2',
+    },
+    {
+        value: '3',
+        label: '3',
+    },
+    {
+        value: '4',
+        label: '4',
+    },
+];
 
 const Form: React.FC<FormProps & FormikProps<ValuesType>> = React.memo(props => {
 
+    const [priority, setPriority] = useState('4');
+
     const classes = useStyles();
     const schema = Yup.object().shape({
-        title: Yup.string().min(2, "Too short!").max(100, "Too long").trim()
+        title: Yup.string().max(100, "Too long").trim()
     })
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPriority(event.target.value);
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -41,10 +65,22 @@ const Form: React.FC<FormProps & FormikProps<ValuesType>> = React.memo(props => 
     if (props.type === "priority") {
         return (
             <form onSubmit={formik.handleSubmit}>
-                <TextField {...formik.getFieldProps("title")}
-                           type={"number"}
-                           variant={'standard'}
-                           disabled={formik.values.disable} autoFocus/>
+                <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Select"
+                    value={priority}
+                    onChange={handleChange}
+                    helperText="Please select your priority"
+                    disabled={formik.values.disable} autoFocus
+                >
+                    {priorities.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+
                 <div style={({position: "fixed"})}>{formik.errors.title ? <div>{formik.errors.title}</div> : null}</div>
             </form>
         )
@@ -52,8 +88,7 @@ const Form: React.FC<FormProps & FormikProps<ValuesType>> = React.memo(props => 
         return (
             <form onSubmit={formik.handleSubmit}>
                 <TextField {...formik.getFieldProps("title")}
-                           variant={'standard'}
-                           className={classes.textField}
+                           className={classes.textFieldTitle}
                            disabled={formik.values.disable} autoFocus/>
                 <div style={({position: "fixed"})}>{formik.errors.title ? <div>{formik.errors.title}</div> : null}</div>
             </form>
@@ -80,9 +115,18 @@ const EditableSpanForm = withFormik<FormProps, ValuesType>({
 export const EditableSpanFormik: React.FC<FormProps> = props => {
     const [editMode, setEditMode] = useState<boolean>(false);
 
-    const saveTitle = (title: string) => {
+    const saveTitle = useCallback((title: string) => {
         props.changeTitle(title);
         setEditMode(false);
+    }, [props])
+
+
+    const titleForSpan = (): string => {
+        if (props.title.length > 23) {
+            return props.title.substr(0, 23) + "...";
+        } else {
+            return props.title;
+        }
     }
 
     return (
@@ -92,17 +136,25 @@ export const EditableSpanFormik: React.FC<FormProps> = props => {
                     ? <EditableSpanForm type={'title'} title={props.title}
                                         changeTitle={saveTitle}
                                         disable={props.disable}/>
-                    : <span onClick={() => {
+                    : <Tooltip title={props.title} placement={"top"}>
+                    <span onClick={() => {
                         setEditMode(true)
-                    }}>{props.title}</span>
+                    }}>{titleForSpan()}</span>
+                    </Tooltip>
             }</>
     )
 }
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        textField: {
+        textFieldTitle: {
             maxWidth: '130px',
+        },
+        textFieldPriority: {
+            '& .MuiTextField-root': {
+                margin: theme.spacing(1),
+                width: '25ch',
+            }
         },
     })
 )

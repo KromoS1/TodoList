@@ -20,7 +20,7 @@ const Form: React.FC<FormProps & FormikProps<ValuesType>> = React.memo(props => 
             title: ""
         },
         validationSchema: Yup.object().shape({
-            title: Yup.string().min(2, "Too short!").max(100, "Too long").trim()
+            title: Yup.string().trim("spaces are not allowed at the beginning of the task name.").max(100, "Too long")
         }),
         onSubmit: (values, {resetForm}) => {
             props.onSubmit(values.title);
@@ -29,13 +29,17 @@ const Form: React.FC<FormProps & FormikProps<ValuesType>> = React.memo(props => 
     })
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} style={({position:"absolute"})}>
             <TextField {...formik.getFieldProps("title")}
-                       variant={"outlined"} disabled={props.disable} size={'small'} label={"Title"}/>
+                       variant={"outlined"} disabled={props.disable}
+                       size={'small'}
+                       label={formik.errors.title ? "Error" : "Title"}
+                        error={formik.errors.title !== undefined}
+                       helperText={formik.errors.title ? formik.errors.title : null}
+            />
             <IconButton color={"primary"} disabled={props.disable} type={"submit"}>
                 <AddBox/>
             </IconButton>
-            <div style={({position:"fixed"})}>{formik.errors.title ? <div>{formik.errors.title}</div> : null}</div>
         </form>
     )
 })

@@ -9,7 +9,7 @@ import {HeaderContainer} from "../components/header/Header";
 import {CircularProgress, Container, LinearProgress, makeStyles} from "@material-ui/core";
 import {Snackbars} from "../components/common/SnackBars";
 import {createStyles} from "@material-ui/core/styles";
-import {inizializeApp, StatusType} from "../redux/reducers/StatusAppReducer";
+import {initializeApp, StatusType} from "../redux/reducers/StatusAppReducer";
 
 export function App() {
     const statusApp = useSelector<AppRootStateType, StatusType>(state => state.statusApp.status);
@@ -18,7 +18,7 @@ export function App() {
     const classes = useStyles();
 
     useEffect(()=>{
-        dispatch(inizializeApp());
+        dispatch(initializeApp());
     },[dispatch])
 
     if (!isInitialized){
@@ -29,15 +29,15 @@ export function App() {
 
     return (
         <Switch>
-            <React.Fragment>
+            <>
                 <HeaderContainer/>
                 {statusApp === "load" && <LinearProgress className={classes.load}/>}
-                <Container fixed>
+                <Container fixed className={classes.content}>
                     <Route path={"/todolists"} component={TodoPage}/>
                     <Route path={"/login"} component={LoginPage}/>
                 </Container>
                 <Snackbars/>
-            </React.Fragment>
+            </>
         </Switch>
     )
 }
@@ -55,6 +55,13 @@ const useStyles = makeStyles(() =>
             display:"flex",
             justifyContent:"center",
             alignItems:"center",
+        },
+        page:{
+            width: "100%",
+            height: "100%",
+        },
+        content:{
+            maxWidth: "90%",
         }
     }),
 );

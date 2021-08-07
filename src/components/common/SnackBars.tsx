@@ -4,7 +4,7 @@ import {StatusAppType} from "../../redux/reducers/StatusAppReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/store";
 import MuiAlert, {AlertProps} from "@material-ui/lab/Alert";
-import {actions} from "../../redux/actions/Actions";
+import {actionsStatusApp} from "../../redux/actions/Actions";
 
 const Alert = (props: AlertProps) => <MuiAlert elevation={6} variant="filled" {...props} />;
 
@@ -18,8 +18,8 @@ export const Snackbars = () => {
         if (reason === 'clickaway') {
             return;
         }
-        dispatch(actions.setStatusApp("idle"));
-        dispatch(actions.setMessageStatus(""));
+        dispatch(actionsStatusApp.setStatusApp("idle"));
+        dispatch(actionsStatusApp.setMessageStatus(""));
     };
 
     return (

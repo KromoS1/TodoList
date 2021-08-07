@@ -42,7 +42,6 @@ export type TaskType = {
     startDate: string
     addedDate: string
     deadline: string
-    isLoad?: boolean
 };
 
 export enum TaskStatuses {

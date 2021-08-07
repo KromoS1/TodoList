@@ -1,11 +1,14 @@
 import {APITodoLists} from '../../DAL/APITodoLists';
 import {ActionsType, TodoListDomainType} from '../types/Types';
 import {AppThunkType} from '../store';
-import {actions} from '../actions/Actions';
 import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
+import {actionsStatusApp, actionsTodoList} from "../actions/Actions";
 
 const initialState: TodoListDomainType[] = [];
-
+const actions = {
+    ...actionsTodoList,
+    ...actionsStatusApp,
+}
 
 export const TodoListReducers = (state: TodoListDomainType[] = initialState, action: ActionsType<typeof actions>): TodoListDomainType[] => {
     switch (action.type) {

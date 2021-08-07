@@ -33,7 +33,7 @@ export const TodoList: React.FC<TodolistPropsType> = React.memo(props => {
     }, [props]);
 
     return (
-        <div>
+        <div className={classes.todolist}>
             <h3 className={'task_title'}>
                 <EditableSpanFormik title={props.todoList.title}
                                     changeTitle={changeTodoListTitle}
@@ -44,7 +44,7 @@ export const TodoList: React.FC<TodolistPropsType> = React.memo(props => {
                 </IconButton>
             </h3>
             <AddItemFormContainer onSubmit={addTask} disable={props.todoList.disable}/>
-            <div >
+            <div className={classes.listTasks}>
                 <TaskContainer todoListId={props.todoList.id}
                                tasks={props.tasks}
                                filter={props.todoList.filter}
@@ -52,7 +52,7 @@ export const TodoList: React.FC<TodolistPropsType> = React.memo(props => {
             </div>
             <BottomNavigation value={value}
                               showLabels
-                              className={classes.root}
+                              className={classes.bntNav}
                               onChange={(event, newValue) => {setValue(newValue);}}>
                 <ButtonFilter titleP={'all'} filterP={props.todoList.filter} onClickHandlerP={onAllClickHandler}/>
                 <ButtonFilter titleP={'active'} filterP={props.todoList.filter} onClickHandlerP={onActiveClickHandler}/>
@@ -63,8 +63,17 @@ export const TodoList: React.FC<TodolistPropsType> = React.memo(props => {
 })
 
 const useStyles = makeStyles({
-    root: {
-        width: 270,
+    bntNav: {
     },
+    listTasks:{
+        marginTop:"70px",
+        overflowY:"scroll",
+        height:"300px",
+    },
+    todolist:{
+        overflow:"hidden",
+        minWidth: 360,
+        maxHeight:490,
+    }
 });
 
