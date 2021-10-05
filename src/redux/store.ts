@@ -3,11 +3,17 @@ import {TaskReducer} from './reducers/TaskReducer';
 import {TodoListReducers} from './reducers/TodoListReducers';
 import thunkMiddleware, {ThunkAction} from 'redux-thunk';
 import {ActionsType} from './types/Types';
-import {actions} from './actions/Actions';
 import {IsAuthReducer} from "./reducers/IsAuthReducer";
 import {reducer as formReducer} from 'redux-form'
 import {StatusAppReducer} from "./reducers/StatusAppReducer";
+import {actionsIsAuth, actionsStatusApp, actionsTask, actionsTodoList} from "./actions/Actions";
 
+const actions = {
+    ...actionsTodoList,
+    ...actionsTask,
+    ...actionsStatusApp,
+    ...actionsIsAuth,
+}
 
 const rootReducer = combineReducers({
     todoLists: TodoListReducers,
