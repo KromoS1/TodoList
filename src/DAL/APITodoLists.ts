@@ -1,16 +1,6 @@
-import axios from "axios";
 import {TodoListDomainType} from '../redux/types/Types';
 import {ResponseTypeGeneric} from '../redux/types/TypesResponse';
-import {apiKey} from "./Api-key";
-
-
-const axiosInstance = axios.create({
-    baseURL: "https://social-network.samuraijs.com/api/1.1/",
-    withCredentials: true,
-    headers: {
-        "API-KEY": apiKey
-    }
-})
+import { axiosInstance } from './APIAuthMe';
 
 export const APITodoLists = {
     get() {

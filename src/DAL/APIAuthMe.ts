@@ -1,15 +1,14 @@
 import axios from 'axios'
-import {apiKey} from "./Api-key";
 import {ResponseTypeGeneric} from "../redux/types/TypesResponse";
 import {AuthMeType} from "../redux/types/Types";
 
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
-        'API-KEY': apiKey
-    }
+        'API-KEY': '23cf7b54-6cd9-4cb1-a851-3767976432ef'
+    },
 })
 
 export const APIAuthMe = {
