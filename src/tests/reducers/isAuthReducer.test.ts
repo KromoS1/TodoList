@@ -1,6 +1,6 @@
-import {actionsIsAuth} from "../redux/actions/Actions";
-import {IsAuthReducer} from "../redux/reducers/IsAuthReducer";
-import {MeProfileType} from "../redux/types/Types";
+import {actionsIsAuth} from "../../redux/actions/Actions";
+import {IsAuthReducer} from "../../redux/reducers/IsAuthReducer";
+import {MeProfileType} from "../../redux/types/Types";
 
 let startState:MeProfileType;
 beforeEach(() => {

@@ -6,7 +6,7 @@ export type ResponseTypeGet<T = []> = {
 export type ResponseTypeGeneric<T = []> = {
     data:T
     fieldsErrors:[]
-    messages:[""]
+    messages:string[]
     resultCode:number
 }
 

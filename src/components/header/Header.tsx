@@ -4,7 +4,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/store";
 import {StatusType} from "../../redux/reducers/StatusAppReducer";
-import {logOut} from "../../redux/reducers/IsAuthReducer";
+import {logOut} from "../../redux/saga/isAuthWatcher";
 
 type HeaderType = {
     status: StatusType

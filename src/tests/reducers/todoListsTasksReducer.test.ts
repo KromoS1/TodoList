@@ -1,7 +1,7 @@
-import {TaskPriorities, TaskStateType, TaskStatuses, TodoListDomainType} from "../redux/types/Types";
-import {actionsTodoList} from "../redux/actions/Actions";
-import {TaskReducer} from "../redux/reducers/TaskReducer";
-import {TodoListReducers} from "../redux/reducers/TodoListReducers";
+import {TaskPriorities, TaskStateType, TaskStatuses, TodoListDomainType} from "../../redux/types/Types";
+import {actionsTodoList} from "../../redux/actions/Actions";
+import {TaskReducer} from "../../redux/reducers/TaskReducer";
+import {TodoListReducers} from "../../redux/reducers/TodoListReducers";
 
 
 let startTodolistState: TodoListDomainType[] = [];

@@ -9,7 +9,8 @@ import {HeaderContainer} from "../components/header/Header";
 import {CircularProgress, Container, LinearProgress, makeStyles} from "@material-ui/core";
 import {Snackbars} from "../components/common/SnackBars";
 import {createStyles} from "@material-ui/core/styles";
-import {initializeApp, StatusType} from "../redux/reducers/StatusAppReducer";
+import {StatusType} from "../redux/reducers/StatusAppReducer";
+import {initializeApp} from "../redux/saga/statusAppWatcher";
 
 export function App() {
     const statusApp = useSelector<AppRootStateType, StatusType>(state => state.statusApp.status);

@@ -1,6 +1,6 @@
-import {TaskPriorities, TaskStateType, TaskStatuses, TaskType} from "../redux/types/Types";
-import {actionsTask, actionsTodoList} from "../redux/actions/Actions";
-import {TaskReducer} from "../redux/reducers/TaskReducer";
+import {TaskPriorities, TaskStateType, TaskStatuses, TaskType} from "../../redux/types/Types";
+import {actionsTask, actionsTodoList} from "../../redux/actions/Actions";
+import {TaskReducer} from "../../redux/reducers/TaskReducer";
 
 
 let startState: TaskStateType = {};

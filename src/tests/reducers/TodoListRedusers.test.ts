@@ -1,7 +1,7 @@
-import {TodoListReducers} from '../redux/reducers/TodoListReducers';
+import {TodoListReducers} from '../../redux/reducers/TodoListReducers';
 import {v1} from 'uuid';
-import {FilterValuesType, TodoListDomainType} from '../redux/types/Types';
-import {actionsStatusApp, actionsTodoList} from "../redux/actions/Actions";
+import {FilterValuesType, TodoListDomainType} from '../../redux/types/Types';
+import {actionsStatusApp, actionsTodoList} from "../../redux/actions/Actions";
 
 const actions = {
     ...actionsTodoList,
@@ -47,8 +47,8 @@ test('correct todolist should be added', () => {
     const endState = TodoListReducers(startState, actions.addTodoList(newTodoList))
 
     expect(endState.length).toBe(3);
-    expect(endState[2].title).toBe("new title");
-    expect(endState[2].order).toBe(2);
+    expect(endState[0].title).toEqual("new title");
+    expect(endState[0].order).toBe(2);
 });
 
 test('correct todolist should be removed', () => {

@@ -100,20 +100,6 @@ export type APIModelPropertyTaskType = {
     deadline: string
 }
 
-//addItemForm
-export type AddItemFormType = {
-    addItem: (title: string) => void
-    disable:boolean
-}
-
-//editableSpan
-export type EditableSpanType = {
-    titleSpan: string
-    changeTitle: (newTitle: string) => void
-    type: 'title' | 'priority'
-    disable?:boolean
-};
-
 //isAuth types
 export type AuthMeType = {
     id: number

@@ -1,20 +1,17 @@
 import {ActionsType} from "../types/Types";
 import {actionsIsAuth, actionsStatusApp} from "../actions/Actions";
-import {AppThunkType} from "../store";
-import {APIAuthMe} from "../../DAL/APIAuthMe";
-import {handleServerNetworkError} from "../../utils/errorUtils";
 
 export type StatusType = "idle" | "load" | "succeeded" | "failed"
 export type StatusAppType = {
     message?: string
     status: StatusType
-    isInitialized:boolean
+    isInitialized: boolean
 }
 
 const initialState: StatusAppType = {
     message: "",
     status: "idle",
-    isInitialized:false,
+    isInitialized: false,
 }
 const actions = {
     ...actionsStatusApp,
@@ -31,18 +28,5 @@ export const StatusAppReducer = (state: StatusAppType = initialState, action: Ac
             return {...state, isInitialized: action.isInitialized}
         default:
             return state
-    }
-}
-
-
-export const initializeApp = ():AppThunkType => async dispatch => {
-    try {
-        const me = await APIAuthMe.me();
-        if (me.resultCode === 0){
-            dispatch(actions.setMeData(me.data,true));
-        }
-        dispatch(actions.setAppInitialized(true));
-    }catch (error){
-        handleServerNetworkError(error, dispatch);
     }
 }

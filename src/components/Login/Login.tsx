@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from "react-redux";
-import {login} from "../../redux/reducers/IsAuthReducer";
 import {Redirect} from "react-router-dom";
 import {AppRootStateType} from "../../redux/store";
 import {Grid, makeStyles} from "@material-ui/core";
@@ -7,6 +6,7 @@ import {createStyles} from "@material-ui/core/styles";
 import React, {useCallback} from 'react'
 import {FormDataLoginType} from "../../redux/types/Types";
 import {FormLoginContainer} from "../FormComponents/LoginFormFormik";
+import {login} from "../../redux/saga/isAuthWatcher";
 
 export const LoginPage = React.memo(() => {
 
@@ -17,7 +17,10 @@ export const LoginPage = React.memo(() => {
         const signIn = useCallback((formData: FormDataLoginType) => {
             if (formData.rememberMe === undefined) formData.rememberMe = false;
             if (formData.captcha === undefined) formData.captcha = false;
-            dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha));
+            dispatch(login({email:formData.email,
+                password:formData.password,
+                rememberMe:formData.rememberMe,
+                captcha:formData.captcha}));
         }, [dispatch])
 
         if (isAuth) {

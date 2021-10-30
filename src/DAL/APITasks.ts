@@ -3,20 +3,18 @@ import {ResponseTypeGeneric, ResponseTypeGet} from '../redux/types/TypesResponse
 import {axiosInstance} from "./APIAuthMe";
 
 export const APITasks = {
-    get(id: string) {
-        return axiosInstance.get<ResponseTypeGet<TaskType[]>>(`/todo-lists/${id}/tasks`)
-            .then(response => response.data.items)
+    get(id: string): Promise<ResponseTypeGet<TaskType[]>> {
+        return axiosInstance.get<ResponseTypeGet<TaskType[]>>(`/todo-lists/${id}/tasks`).then(res => res.data);
     },
-    create(id: string, title: string) {
-        return axiosInstance.post<ResponseTypeGeneric<{ item: TaskType }>>(`/todo-lists/${id}/tasks`, {title})
-            .then(response => response.data)
+    create(id: string, title: string): Promise<ResponseTypeGeneric<{ item: TaskType }>> {
+        return axiosInstance.post<ResponseTypeGeneric<{ item: TaskType }>>(`/todo-lists/${id}/tasks`, {title}).then(res => res.data);
     },
-    updateTitle(todoListId: string, idTask: string, property: APIModelPropertyTaskType) {
+    updateTitle(todoListId: string, idTask: string, property: APIModelPropertyTaskType)
+        : Promise<ResponseTypeGeneric<{ item: TaskType }>> {
         return axiosInstance.put<ResponseTypeGeneric<{ item: TaskType }>>(`/todo-lists/${todoListId}/tasks/${idTask}`, {...property})
-            .then(response => response.data)
+            .then(res => res.data);
     },
-    delete(todoListId: string, idTask: string) {
-        return axiosInstance.delete<ResponseTypeGeneric>(`/todo-lists/${todoListId}/tasks/${idTask}`)
-            .then(response => response.data.resultCode)
+    delete(todoListId: string, idTask: string): Promise<ResponseTypeGeneric> {
+        return axiosInstance.delete<ResponseTypeGeneric>(`/todo-lists/${todoListId}/tasks/${idTask}`).then(res => res.data);
     }
 }

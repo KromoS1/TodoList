@@ -3,11 +3,11 @@ import {BottomNavigation, IconButton, makeStyles} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {ButtonFilter} from '../common/ButtonFilter';
 import {TaskContainer} from '../task/Task';
-import {getTasks} from '../../redux/reducers/TaskReducer';
 import {useDispatch} from 'react-redux';
 import {TodolistPropsType} from '../../redux/types/Types';
 import {AddItemFormContainer} from "../FormComponents/AddItemFormFormik";
 import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
+import {getTasks} from "../../redux/saga/taskWatcher";
 
 export const TodoList: React.FC<TodolistPropsType> = React.memo(props => {
 

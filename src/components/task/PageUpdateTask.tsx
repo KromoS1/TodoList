@@ -1,13 +1,12 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Box, Button, IconButton, makeStyles, Paper, TextField} from '@material-ui/core';
-import {getTasks} from '../../redux/reducers/TaskReducer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {DatesTask} from '../common/DatesTask';
 import SaveIcon from '@material-ui/icons/Save';
 import {useDispatch} from 'react-redux';
 import {TaskPriorities, TaskType, UpdateModelPropertyTaskType} from '../../redux/types/Types';
 import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
-import {withFormik} from "formik";
+import {getTasks} from "../../redux/saga/taskWatcher";
 
 interface PageUpdateTaskType {
     task: TaskType
@@ -20,7 +19,7 @@ export const PageUpdateTask: React.FC<PageUpdateTaskType> = React.memo(props => 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getTasks(props.task.todoListId));
-    }, [])
+    }, [dispatch,props.task.todoListId])
 
     const [textDesc, setTextDesc] = useState<string>(props.task.description);
     const [task, setTask] = useState<TaskType>({...props.task});

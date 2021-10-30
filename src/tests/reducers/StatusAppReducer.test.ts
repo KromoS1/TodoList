@@ -1,5 +1,5 @@
-import {actionsStatusApp} from "../redux/actions/Actions";
-import {StatusAppReducer, StatusAppType} from "../redux/reducers/StatusAppReducer";
+import {actionsStatusApp} from "../../redux/actions/Actions";
+import {StatusAppReducer, StatusAppType} from "../../redux/reducers/StatusAppReducer";
 
 let startState:StatusAppType;
 beforeEach(() => {

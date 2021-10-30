@@ -4,15 +4,16 @@ import {Delete} from '@material-ui/icons';
 import {green} from '@material-ui/core/colors';
 import {PageUpdateTask} from './PageUpdateTask';
 import {
-    TaskContainerPropsType,
+    TaskContainerPropsType, TaskStateType,
     TaskStatuses,
     TaskTypeProps,
     UpdateModelPropertyTaskType
 } from '../../redux/types/Types';
-import {deleteTask, updateTask} from '../../redux/reducers/TaskReducer';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {EditableSpanFormik} from "../FormComponents/EditableSpanFormik";
+import {deleteTask, updateTask} from "../../redux/saga/taskWatcher";
+import {AppRootStateType} from "../../redux/store";
 
 export const Task: React.FC<TaskTypeProps> = React.memo(props => {
     const [showDetails, setShowDetails] = useState<boolean>(false);
@@ -70,10 +71,11 @@ export const Task: React.FC<TaskTypeProps> = React.memo(props => {
 export const TaskContainer: React.FC<TaskContainerPropsType> = props => {
     let taskJSX;
     const dispatch = useDispatch();
+    const tasksAll = useSelector<AppRootStateType,TaskStateType>(state => state.tasks);
 
     const changeTask = useCallback((todolistId: string, idTask: string, model: UpdateModelPropertyTaskType) => {
-        dispatch(updateTask(todolistId, idTask, model));
-    }, [dispatch]);
+        dispatch(updateTask(todolistId, idTask, model,tasksAll));
+    }, [dispatch,tasksAll]);
     const removeTask = useCallback((id: string, todoListID: string) => {
         dispatch(deleteTask(todoListID, id));
     }, [dispatch]);

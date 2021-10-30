@@ -2,39 +2,34 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../../redux/store';
 import {FilterValuesType, TaskStateType, TodoListContainerType, TodoListDomainType} from '../../redux/types/Types';
 import React, {useCallback, useEffect} from 'react';
-import {
-    addTodolistTC,
-    deleteTodoListTC,
-    getTodoListsTC,
-    updateTitleTodoListTC
-} from '../../redux/reducers/TodoListReducers';
-import {createTaskTC} from '../../redux/reducers/TaskReducer';
 import {Grid, Paper} from '@material-ui/core';
 import {TodoList} from './TodoList';
 import {Redirect} from "react-router-dom";
 import {Snackbars} from "../common/SnackBars";
 import {AddItemFormContainer} from "../FormComponents/AddItemFormFormik";
 import {actionsTodoList} from "../../redux/actions/Actions";
+import {createTask} from "../../redux/saga/taskWatcher";
+import {addTodolist, deleteTodoList, getTodoLists, updateTitleTodoList} from "../../redux/saga/todoListWatcher";
 
 const TodoListContainer: React.FC<TodoListContainerType> = props => {
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getTodoListsTC());
+        dispatch(getTodoLists());
     }, [dispatch])
 
     const addTask = useCallback((title: string, todoListID: string) => {
-        dispatch(createTaskTC(todoListID, title));
+        dispatch(createTask(todoListID, title));
     }, [dispatch]);
     const changeTaskFilter = useCallback((value: FilterValuesType, todoListID: string) => {
         dispatch(actionsTodoList.changeTodoListFilter(todoListID, value));
     }, [dispatch]);
     const changeTodoListTitle = useCallback((todoListID: string, title: string) => {
-        dispatch(updateTitleTodoListTC(todoListID, title));
+        dispatch(updateTitleTodoList(todoListID, title));
     }, [dispatch]);
     const removeTodoList = useCallback((todoListID: string) => {
-        dispatch(deleteTodoListTC(todoListID));
+        dispatch(deleteTodoList(todoListID));
     }, [dispatch]);
 
     const todoListsJSX = props.todoLists.map(tl => {
@@ -68,7 +63,7 @@ export const TodoPage = () => {
     const dispatch = useDispatch();
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title));
+        dispatch(addTodolist(title));
     }, [dispatch]);
 
     if (!isAuth) {
@@ -80,7 +75,7 @@ export const TodoPage = () => {
             <Grid container style={{padding: '20px'}}>
                 <AddItemFormContainer onSubmit={addTodoList} disable={false}/>
             </Grid>
-            <Grid container spacing={5} style={{marginTop: '25px',justifyContent:"center"}}>
+            <Grid container spacing={5} style={{marginTop: '25px', justifyContent: "center"}}>
                 <TodoListContainer todoLists={todoLists} tasks={tasks}/>
             </Grid>
             <Snackbars/>
